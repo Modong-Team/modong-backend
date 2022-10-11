@@ -1,8 +1,8 @@
 name: modong CI
 
 on:
-  pull_request:
-    branches: ['main']
+  push:
+    branches: ['master']
 
 jobs:
   test:
