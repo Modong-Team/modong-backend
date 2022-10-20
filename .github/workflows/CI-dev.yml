@@ -1,0 +1,52 @@
+name: modong development CI/CD
+
+on:
+  pull_request:
+    branches: ['develop']
+
+jobs:
+  CI-dev:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        node-version: [16.15.1]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependency
+        run: npm ci
+
+      - name: build server files
+        working-directory: ./
+        run: npm run build
+
+      - name: Unit Test
+        run: npm test
+  CD-dev:
+    needs: [CI-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Generate deployment package
+        run: zip -r ${{ github.sha }}.zip . -x "*.git*" node_modules
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: modong-backend-dev
+          environment_name: modong-backend-dev-env
+          version_label: ${{ github.sha }}
+          version_description: ${{ github.event.head_commit.message }}
+          region: ap-northeast-2
+          deployment_package: ${{ github.sha }}.zip
