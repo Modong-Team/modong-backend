@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FormModule } from './form/form.module';
 
 const returnNodeEnv = () => {
   if (process.env.NODE_ENV === 'local') {
@@ -32,7 +31,6 @@ const returnNodeEnv = () => {
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: true,
     }),
-    FormModule,
   ],
   controllers: [AppController],
   providers: [AppService],
