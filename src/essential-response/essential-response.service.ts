@@ -12,7 +12,7 @@ export class EssentialResponseService {
     requestCreateAllEssentialResponseDTO: RequestCreateAllEssentialResponseDTO,
   ) {
     const { applicationId } =
-      requestCreateAllEssentialResponseDTO.createEssentialResponses[0];
+      requestCreateAllEssentialResponseDTO.essentialResponses[0];
 
     await this.essentialResponseRepository.createAll(
       requestCreateAllEssentialResponseDTO,
