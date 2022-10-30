@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ResponseCreateApplicationDTO {
+export class ResponseCreateAllEssentialResponseDTO {
   @ApiProperty({
     example: 1,
   })
-  id: number;
+  applicationId: number;
 }
