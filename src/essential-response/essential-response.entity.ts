@@ -5,7 +5,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -24,7 +23,7 @@ export class EssentialResponse {
   @JoinColumn()
   application: Application;
 
-  @OneToOne(() => Essential, (essential) => essential.essentialResponse)
+  @ManyToOne(() => Essential, (essential) => essential.essentialResponses)
   @JoinColumn()
   essential: Essential;
 }

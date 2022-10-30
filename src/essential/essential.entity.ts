@@ -3,7 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,10 +18,10 @@ export class Essential {
   })
   content: string;
 
-  @OneToOne(
+  @OneToMany(
     () => EssentialResponse,
     (essentialResponse) => essentialResponse.essential,
   )
   @JoinColumn()
-  essentialResponse: EssentialResponse;
+  essentialResponses: EssentialResponse[];
 }
