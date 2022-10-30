@@ -3,6 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { Application } from './application.entity';
@@ -15,6 +16,10 @@ import { ResponseCreateApplicationDTO } from './dto/response.create-application.
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
 
+  @ApiOkResponse({
+    description: 'Application[]',
+    type: [Application],
+  })
   @Get('/all')
   async getAllApplication(): Promise<Application[]> {
     return await this.applicationService.getAllApplication();
