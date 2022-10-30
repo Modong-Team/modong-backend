@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-class CreateEssentialResponsesDTO {
+class EssentialResponsesDTO {
   @ApiProperty({
     example: 1,
   })
@@ -19,7 +19,7 @@ class CreateEssentialResponsesDTO {
 
 export class RequestCreateAllEssentialResponseDTO {
   @ApiProperty({
-    type: [CreateEssentialResponsesDTO],
+    type: [EssentialResponsesDTO],
   })
-  createEssentialResponses: CreateEssentialResponsesDTO[];
+  essentialResponses: EssentialResponsesDTO[];
 }

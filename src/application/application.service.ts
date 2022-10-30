@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Application } from './application.entity';
 import { ApplicationRepository } from './application.repository';
 import { RequestCreateApplicationDTO } from './dto/request.create-application.dto';
 import { ResponseCreateApplicationDTO } from './dto/response.create-application.dto';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private readonly applicationRepository: ApplicationRepository) {}
+  constructor(
+    private readonly applicationRepository: ApplicationRepository,
+    @InjectRepository(Application)
+    private readonly applicationRepo: Repository<Application>,
+  ) {}
 
   async createApplication(
     requestCreateApplicationDTO: RequestCreateApplicationDTO,
@@ -16,5 +23,9 @@ export class ApplicationService {
     return {
       id,
     };
+  }
+
+  async getAllApplication() {
+    return await this.applicationRepo.find();
   }
 }

@@ -22,13 +22,13 @@ export class EssentialResponseRepository {
   ) {
     const essentialResponses = [];
     const { applicationId } =
-      requestCreateAllEssentialResponseDTO.createEssentialResponses[0];
+      requestCreateAllEssentialResponseDTO.essentialResponses[0];
     const application = await this.applicationRepository.findOne({
       where: {
         id: applicationId,
       },
     });
-    for (const er of requestCreateAllEssentialResponseDTO.createEssentialResponses) {
+    for (const er of requestCreateAllEssentialResponseDTO.essentialResponses) {
       const { essentialId, value } = er;
       const essentialResponse = this.essentialResponseRepository.create({
         value,
