@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ApplicationModule } from './application/application.module';
+import { EssentialResponseModule } from './essential-response/essential-response.module';
+import { EssentialModule } from './essential/essential.module';
 
 const returnNodeEnv = () => {
   if (process.env.NODE_ENV === 'local') {
@@ -31,6 +34,9 @@ const returnNodeEnv = () => {
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: true,
     }),
+    ApplicationModule,
+    EssentialResponseModule,
+    EssentialModule,
   ],
   controllers: [AppController],
   providers: [AppService],
