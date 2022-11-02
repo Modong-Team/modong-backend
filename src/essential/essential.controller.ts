@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Essential } from './essential.entity';
 import { EssentialService } from './essential.service';
 
@@ -8,6 +8,9 @@ import { EssentialService } from './essential.service';
 export class EssentialController {
   constructor(private readonly essentialService: EssentialService) {}
 
+  @ApiOperation({
+    summary: '전체 필수 질문 조회',
+  })
   @ApiOkResponse({
     description: 'Essential[]',
     type: [Essential],

@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
@@ -11,6 +20,7 @@ import {
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { RequestCreateApplicationDTO } from './dto/request.create-application.dto';
+import { RequestUpdateApplicationDTO } from './dto/request.update-application.dto';
 import { ResponseCreateApplicationDTO } from './dto/response.create-application.dto';
 
 @ApiTags('application')
@@ -54,6 +64,25 @@ export class ApplicationController {
     return await this.applicationService.createApplication(
       requestCreateApplicationDTO,
       clubId,
+    );
+  }
+
+  @ApiOperation({
+    summary: '지원서 필수질문 구성 수정',
+  })
+  @ApiBody({
+    description: 'RequestUpdateApplicationDTO',
+    type: RequestUpdateApplicationDTO,
+  })
+  @ApiNoContentResponse()
+  @Patch(':id')
+  async updateApplication(
+    requestUpdateApplicationDTO: RequestUpdateApplicationDTO,
+    @Param('id') id: number,
+  ) {
+    await this.applicationService.updateApplication(
+      requestUpdateApplicationDTO,
+      id,
     );
   }
 }

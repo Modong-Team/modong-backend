@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Application } from 'src/application/application.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Essential {
@@ -17,4 +24,8 @@ export class Essential {
     nullable: false,
   })
   content: string;
+
+  @ManyToMany(() => Application, (application) => application.essentials)
+  @JoinTable()
+  applications: Application[];
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Club } from 'src/club/club.entity';
+import { Essential } from 'src/essential/essential.entity';
 import { Repository } from 'typeorm';
 import { Application } from './application.entity';
 import { RequestCreateApplicationDTO } from './dto/request.create-application.dto';
+import { RequestUpdateApplicationDTO } from './dto/request.update-application.dto';
 import { ResponseCreateApplicationDTO } from './dto/response.create-application.dto';
 
 @Injectable()
@@ -12,6 +14,8 @@ export class ApplicationService {
     @InjectRepository(Application)
     private readonly applicationRepo: Repository<Application>,
     @InjectRepository(Club) private readonly clubRepository: Repository<Club>,
+    @InjectRepository(Essential)
+    private readonly essentialRepository: Repository<Essential>,
   ) {}
 
   async createApplication(
@@ -44,6 +48,31 @@ export class ApplicationService {
           id: clubId,
         },
       },
+    });
+  }
+
+  async updateApplication(
+    requestUpdateApplicationDTO: RequestUpdateApplicationDTO,
+    id: number,
+  ) {
+    const { essentialIds } = requestUpdateApplicationDTO;
+    const application = await this.applicationRepo.findOne({
+      where: {
+        id,
+      },
+    });
+    const essentials = [];
+
+    for (const essentialId of essentialIds) {
+      const essential = await this.essentialRepository.findOne({
+        where: {
+          id: essentialId,
+        },
+      });
+      essentials.push(essential);
+    }
+    await this.applicationRepo.update(application, {
+      essentials,
     });
   }
 }
