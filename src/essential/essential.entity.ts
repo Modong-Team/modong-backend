@@ -26,6 +26,5 @@ export class Essential {
   content: string;
 
   @ManyToMany(() => Application, (application) => application.essentials)
-  @JoinTable()
   applications: Application[];
 }
