@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EssentialResponse } from 'src/essential-response/essential-response.entity';
+import { Application } from 'src/application/application.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
-  OneToMany,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,10 +25,7 @@ export class Essential {
   })
   content: string;
 
-  @OneToMany(
-    () => EssentialResponse,
-    (essentialResponse) => essentialResponse.essential,
-  )
-  @JoinColumn()
-  essentialResponses: EssentialResponse[];
+  @ManyToMany(() => Application, (application) => application.essentials)
+  @JoinTable()
+  applications: Application[];
 }

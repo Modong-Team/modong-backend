@@ -5,8 +5,8 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationModule } from './application/application.module';
-import { EssentialResponseModule } from './essential-response/essential-response.module';
 import { EssentialModule } from './essential/essential.module';
+import { ClubModule } from './club/club.module';
 
 const returnNodeEnv = () => {
   if (process.env.NODE_ENV === 'local') {
@@ -35,8 +35,8 @@ const returnNodeEnv = () => {
       synchronize: true,
     }),
     ApplicationModule,
-    EssentialResponseModule,
     EssentialModule,
+    ClubModule,
   ],
   controllers: [AppController],
   providers: [AppService],

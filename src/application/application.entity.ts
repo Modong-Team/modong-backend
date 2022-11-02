@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EssentialResponse } from 'src/essential-response/essential-response.entity';
+import { Club } from 'src/club/club.entity';
+import { Essential } from 'src/essential/essential.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToMany,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -32,13 +34,11 @@ export class Application {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(
-    () => EssentialResponse,
-    (essentialResponse) => essentialResponse.application,
-    {
-      cascade: true,
-    },
-  )
-  @JoinColumn()
-  essentialResponses: EssentialResponse[];
+  @ManyToOne(() => Club, (club) => club.applications)
+  @JoinTable()
+  club: Club;
+
+  @ManyToMany(() => Essential, (essential) => essential.applications)
+  @JoinTable()
+  essentials: Essential[];
 }

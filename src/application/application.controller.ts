@@ -1,14 +1,26 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { Application } from './application.entity';
 import { ApplicationService } from './application.service';
 import { RequestCreateApplicationDTO } from './dto/request.create-application.dto';
+import { RequestUpdateApplicationDTO } from './dto/request.update-application.dto';
 import { ResponseCreateApplicationDTO } from './dto/response.create-application.dto';
 
 @ApiTags('application')
@@ -16,15 +28,23 @@ import { ResponseCreateApplicationDTO } from './dto/response.create-application.
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
 
+  @ApiOperation({
+    summary: '동아리의 전체 지원서 조회',
+  })
   @ApiOkResponse({
     description: 'Application[]',
     type: [Application],
   })
   @Get('/all')
-  async getAllApplication(): Promise<Application[]> {
-    return await this.applicationService.getAllApplication();
+  async getAllApplication(
+    @Query('clubId') clubId: number,
+  ): Promise<Application[]> {
+    return await this.applicationService.getAllApplication(clubId);
   }
 
+  @ApiOperation({
+    summary: '지원서 생성',
+  })
   @ApiBody({
     description: 'RequestCreateApplicationDTO',
     type: RequestCreateApplicationDTO,
@@ -39,9 +59,30 @@ export class ApplicationController {
   @Post()
   async createApplication(
     @Body() requestCreateApplicationDTO: RequestCreateApplicationDTO,
+    @Query('clubId') clubId: number,
   ): Promise<ResponseCreateApplicationDTO> {
     return await this.applicationService.createApplication(
       requestCreateApplicationDTO,
+      clubId,
+    );
+  }
+
+  @ApiOperation({
+    summary: '지원서 필수질문 구성 수정',
+  })
+  @ApiBody({
+    description: 'RequestUpdateApplicationDTO',
+    type: RequestUpdateApplicationDTO,
+  })
+  @ApiNoContentResponse()
+  @Patch(':id')
+  async updateApplication(
+    requestUpdateApplicationDTO: RequestUpdateApplicationDTO,
+    @Param('id') id: number,
+  ) {
+    await this.applicationService.updateApplication(
+      requestUpdateApplicationDTO,
+      id,
     );
   }
 }
