@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -76,8 +77,9 @@ export class ApplicationController {
   @ApiNoContentResponse()
   @Patch(':id')
   async updateApplication(
+    @Body()
     requestUpdateApplicationDTO: RequestUpdateApplicationDTO,
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
   ) {
     await this.applicationService.updateApplication(
       requestUpdateApplicationDTO,

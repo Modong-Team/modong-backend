@@ -12,7 +12,7 @@ import { ResponseCreateApplicationDTO } from './dto/response.create-application.
 export class ApplicationService {
   constructor(
     @InjectRepository(Application)
-    private readonly applicationRepo: Repository<Application>,
+    private readonly applicationRepository: Repository<Application>,
     @InjectRepository(Club) private readonly clubRepository: Repository<Club>,
     @InjectRepository(Essential)
     private readonly essentialRepository: Repository<Essential>,
@@ -29,17 +29,17 @@ export class ApplicationService {
       },
     });
 
-    const application = this.applicationRepo.create({
+    const application = this.applicationRepository.create({
       title,
       club,
     });
-    const { id } = await this.applicationRepo.save(application);
+    const { id } = await this.applicationRepository.save(application);
 
     return { id };
   }
 
   async getAllApplication(clubId: number) {
-    return await this.applicationRepo.find({
+    return await this.applicationRepository.find({
       relations: {
         club: true,
       },
@@ -56,11 +56,12 @@ export class ApplicationService {
     id: number,
   ) {
     const { essentialIds } = requestUpdateApplicationDTO;
-    const application = await this.applicationRepo.findOne({
+    const application = await this.applicationRepository.findOne({
       where: {
         id,
       },
     });
+
     const essentials = [];
 
     for (const essentialId of essentialIds) {
@@ -69,10 +70,10 @@ export class ApplicationService {
           id: essentialId,
         },
       });
+
       essentials.push(essential);
     }
-    await this.applicationRepo.update(application, {
-      essentials,
-    });
+    application.essentials = essentials;
+    await this.applicationRepository.save(application);
   }
 }
