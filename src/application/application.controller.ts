@@ -12,9 +12,9 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
-  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { Application } from './application.entity';
@@ -22,6 +22,7 @@ import { ApplicationService } from './application.service';
 import { RequestCreateApplicationDTO } from './dto/request.create-application.dto';
 import { RequestUpdateApplicationDTO } from './dto/request.update-application.dto';
 import { ResponseCreateApplicationDTO } from './dto/response.create-application.dto';
+import { ApplicationWithEssentials } from './type/application-with-essentials.type';
 
 @ApiTags('application')
 @Controller('application')
@@ -74,16 +75,31 @@ export class ApplicationController {
     description: 'RequestUpdateApplicationDTO',
     type: RequestUpdateApplicationDTO,
   })
-  @ApiNoContentResponse()
+  @ApiOkResponse({
+    description: 'Application',
+    type: Application,
+  })
   @Patch(':id')
   async updateApplication(
     @Body()
     requestUpdateApplicationDTO: RequestUpdateApplicationDTO,
     @Param('id', ParseIntPipe) id: number,
-  ) {
-    await this.applicationService.updateApplication(
+  ): Promise<Application> {
+    return await this.applicationService.updateApplication(
       requestUpdateApplicationDTO,
       id,
     );
+  }
+
+  @ApiOperation({
+    summary: '지원서 id로 지원서 조회',
+  })
+  @ApiOkResponse({
+    description: 'Application',
+    type: ApplicationWithEssentials,
+  })
+  @Get('/:id')
+  async getApplicationById(@Param('id', ParseIntPipe) id: number) {
+    return await this.applicationService.getApplicationById(id);
   }
 }

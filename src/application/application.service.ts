@@ -74,6 +74,15 @@ export class ApplicationService {
       essentials.push(essential);
     }
     application.essentials = essentials;
-    await this.applicationRepository.save(application);
+    return await this.applicationRepository.save(application);
+  }
+
+  async getApplicationById(id: number) {
+    return await this.applicationRepository.findOne({
+      relations: ['essentials'],
+      where: {
+        id,
+      },
+    });
   }
 }
