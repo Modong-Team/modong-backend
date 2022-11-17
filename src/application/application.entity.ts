@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Club } from 'src/club/club.entity';
 import { Essential } from 'src/essential/essential.entity';
+import { Form } from 'src/form/form.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +9,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -41,4 +43,7 @@ export class Application {
   @ManyToMany(() => Essential, (essential) => essential.applications)
   @JoinTable()
   essentials: Essential[];
+
+  @OneToMany(() => Form, (form) => form.application)
+  forms: Form[];
 }

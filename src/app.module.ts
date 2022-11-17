@@ -7,6 +7,10 @@ import { AppService } from './app.service';
 import { ApplicationModule } from './application/application.module';
 import { EssentialModule } from './essential/essential.module';
 import { ClubModule } from './club/club.module';
+import { FormModule } from './form/form.module';
+import { CheckboxOptionModule } from './checkbox-option/checkbox-option.module';
+import { RadioOptionModule } from './radio-option/radio-option.module';
+import { QuestionModule } from './question/question.module';
 
 const returnNodeEnv = () => {
   if (process.env.NODE_ENV === 'local') {
@@ -37,6 +41,10 @@ const returnNodeEnv = () => {
     ApplicationModule,
     EssentialModule,
     ClubModule,
+    FormModule,
+    QuestionModule,
+    RadioOptionModule,
+    CheckboxOptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

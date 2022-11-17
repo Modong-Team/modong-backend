@@ -19,6 +19,15 @@ export class Essential {
   })
   content: string;
 
+  @ApiProperty({
+    example: 'true',
+  })
+  @Column({
+    type: Boolean,
+    nullable: false,
+  })
+  isFixed: boolean;
+
   @ManyToMany(() => Application, (application) => application.essentials)
   applications: Application[];
 }
