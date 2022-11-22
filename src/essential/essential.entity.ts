@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Application } from 'src/application/application.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { EssentialAnswer } from 'src/essential-answer/essential-answer.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Essential {
@@ -30,4 +37,10 @@ export class Essential {
 
   @ManyToMany(() => Application, (application) => application.essentials)
   applications: Application[];
+
+  @OneToMany(
+    () => EssentialAnswer,
+    (essnetialAnswer) => essnetialAnswer.essential,
+  )
+  essentialAnswers: EssentialAnswer[];
 }
