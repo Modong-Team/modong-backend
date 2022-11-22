@@ -79,10 +79,16 @@ export class ApplicationService {
 
   async getApplicationById(id: number) {
     return await this.applicationRepository.findOne({
-      relations: ['essentials'],
+      relations: ['essentials', 'forms'],
       where: {
         id,
       },
     });
+  }
+
+  async deleteApplicationById(id: number) {
+    await this.applicationRepository.delete(id);
+
+    return;
   }
 }

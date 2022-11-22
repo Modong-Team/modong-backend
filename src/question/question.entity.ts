@@ -1,9 +1,11 @@
 import { Form } from 'src/form/form.entity';
+import { QuestionAnswer } from 'src/question-answer/question-answer.entity';
 import {
   Column,
   Entity,
   JoinTable,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
@@ -25,4 +27,7 @@ export class Question {
   @ManyToOne(() => Form, (form) => form.questions)
   @JoinTable()
   form: Form;
+
+  @OneToMany(() => QuestionAnswer, (questionAnswer) => questionAnswer.question)
+  questionAnswers: QuestionAnswer[];
 }

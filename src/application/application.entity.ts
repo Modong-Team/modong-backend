@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Applicant } from 'src/applicant/applicant.entity';
 import { Club } from 'src/club/club.entity';
 import { Essential } from 'src/essential/essential.entity';
 import { Form } from 'src/form/form.entity';
@@ -46,4 +47,7 @@ export class Application {
 
   @OneToMany(() => Form, (form) => form.application)
   forms: Form[];
+
+  @OneToMany(() => Applicant, (applicant) => applicant.application)
+  applicants: Applicant[];
 }

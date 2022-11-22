@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -21,7 +22,7 @@ import { ApplicationService } from './application.service';
 import { RequestCreateApplicationDTO } from './dto/request.create-application.dto';
 import { RequestUpdateApplicationDTO } from './dto/request.update-application.dto';
 import { ResponseCreateApplicationDTO } from './dto/response.create-application.dto';
-import { ApplicationWithEssentials } from './type/application-with-essentials.type';
+import { GetApplicationByIdDTO } from './type/get-application-by-id.type';
 
 @ApiTags('application')
 @Controller('application')
@@ -95,10 +96,19 @@ export class ApplicationController {
   })
   @ApiOkResponse({
     description: 'Application',
-    type: ApplicationWithEssentials,
+    type: GetApplicationByIdDTO,
   })
   @Get('/:id')
   async getApplicationById(@Param('id', ParseIntPipe) id: number) {
     return await this.applicationService.getApplicationById(id);
+  }
+
+  @ApiOperation({
+    summary: '지원서 id로 삭제',
+  })
+  @ApiOkResponse({})
+  @Delete('/:id')
+  async deleteApplicationById(@Param('id', ParseIntPipe) id: number) {
+    return await this.applicationService.deleteApplicationById(id);
   }
 }
