@@ -2,6 +2,7 @@ import { Application } from 'src/application/application.entity';
 import { EssentialAnswer } from 'src/essential-answer/essential-answer.entity';
 import { QuestionAnswer } from 'src/question-answer/question-answer.entity';
 import {
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToOne,
@@ -26,4 +27,7 @@ export class Applicant {
 
   @OneToMany(() => QuestionAnswer, (questionAnswer) => questionAnswer.applicant)
   questionAnswers: QuestionAnswer[];
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

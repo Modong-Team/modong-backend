@@ -127,7 +127,11 @@ export class FormService {
 
   async getFormById(id: number) {
     return await this.formRepository.findOne({
-      relations: ['questions', 'questions.options'],
+      relations: {
+        questions: {
+          questionOptions: true,
+        },
+      },
       where: {
         id,
       },
