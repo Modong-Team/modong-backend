@@ -1,4 +1,4 @@
-import { RadioQuestion } from 'src/question/radio-question.entity';
+import { Question } from 'src/question/question.entity';
 import {
   Column,
   Entity,
@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class RadioOption {
+export class QuestionOption {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,7 +17,7 @@ export class RadioOption {
   })
   value: string;
 
-  @ManyToOne(() => RadioQuestion, (radioQuestion) => radioQuestion.options)
+  @ManyToOne(() => Question, (question) => question.questionOptions)
   @JoinTable()
-  question: RadioQuestion;
+  question: Question;
 }
