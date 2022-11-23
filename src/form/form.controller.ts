@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -61,5 +70,17 @@ export class FormController {
     @Query('applicationId') applicationId: number,
   ): Promise<Form[]> {
     return await this.formService.getFormByApplicationId(applicationId);
+  }
+
+  @ApiOperation({
+    summary: 'id로 질문페이지 조회',
+  })
+  @ApiOkResponse({
+    description: 'Form',
+    type: Form,
+  })
+  @Get('/:id')
+  async getFormById(@Param('id', ParseIntPipe) id: number) {
+    return await this.formService.getFormById(id);
   }
 }

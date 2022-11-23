@@ -1,5 +1,6 @@
 import { Form } from 'src/form/form.entity';
 import { QuestionAnswer } from 'src/question-answer/question-answer.entity';
+import { QuestionOption } from 'src/question-option/question-option.entity';
 import {
   Column,
   Entity,
@@ -7,22 +8,34 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  TableInheritance,
 } from 'typeorm';
+import { QuestionType } from 'src/enum/question-type.enum';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class Question {
+  @ApiProperty({
+    example: '1',
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({
+    example: 'MBTI?',
+  })
   @Column({
     type: String,
   })
   content: string;
 
-  @Column()
-  type: string;
+  @ApiProperty({
+    enum: QuestionType,
+  })
+  @Column({
+    type: 'enum',
+    enum: QuestionType,
+  })
+  type: QuestionType;
 
   @ManyToOne(() => Form, (form) => form.questions)
   @JoinTable()
@@ -30,4 +43,7 @@ export class Question {
 
   @OneToMany(() => QuestionAnswer, (questionAnswer) => questionAnswer.question)
   questionAnswers: QuestionAnswer[];
+
+  @OneToMany(() => QuestionOption, (option) => option.question)
+  questionOptions: QuestionOption[];
 }
