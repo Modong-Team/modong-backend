@@ -81,17 +81,15 @@ export class FormService {
 
     const DBQuestions = [];
     for (const question of questions) {
-      let q: Question;
-
+      const q = this.questionRepository.create({
+        content: question.content,
+        form,
+      });
+      await this.questionRepository.save(q);
       if (
         question.type === QuestionType.CheckboxQuestion ||
         question.type === QuestionType.RadioQuestion
       ) {
-        q = this.questionRepository.create({
-          content: question.content,
-          form,
-        });
-        await this.questionRepository.save(q);
         const DBOptions = [];
         for (const optionValue of question.options) {
           const option = this.optionRepository.create({
@@ -101,16 +99,14 @@ export class FormService {
           await this.optionRepository.save(option);
           DBOptions.push(option);
         }
-
         q.questionOptions = DBOptions;
-        DBQuestions.push(q);
       }
-      form.questions = DBQuestions;
-
-      const { id } = await this.formRepository.save(form);
-
-      return { id };
+      DBQuestions.push(q);
     }
+    form.questions = DBQuestions;
+    const { id } = await this.formRepository.save(form);
+
+    return { id };
   }
 
   async getFormByApplicationId(applicationId: number) {

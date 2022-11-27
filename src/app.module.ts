@@ -8,6 +8,7 @@ import { ApplicationModule } from './application/application.module';
 import { EssentialModule } from './essential/essential.module';
 import { ClubModule } from './club/club.module';
 import { FormModule } from './form/form.module';
+import { ApplicantModule } from './applicant/applicant.module';
 
 const returnNodeEnv = () => {
   if (process.env.NODE_ENV === 'local') {
@@ -39,6 +40,7 @@ const returnNodeEnv = () => {
     EssentialModule,
     ClubModule,
     FormModule,
+    ApplicantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
