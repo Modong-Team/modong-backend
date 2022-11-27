@@ -1,5 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ApplicantStatus } from 'src/enum/applicant-status.enum';
 import { ApplicantService } from './applicant.service';
 import { RequestSubmitApplicationDTO } from './dto/request.submit-application.dto';
 import { ResponseSubmitApplicationDTO } from './dto/response.submit-application.dto';
@@ -28,5 +42,29 @@ export class ApplicantController {
       essentialAnswers,
       questionAnswers,
     );
+  }
+
+  @ApiOperation({
+    summary: '지원서 id로 지원자 조회',
+  })
+  @ApiOkResponse({})
+  @Get()
+  async getApplicantsByApplicationId(
+    @Query('applicationId') applicationId: number,
+  ) {
+    return await this.applicantService.getApplicantsByApplicationId(
+      applicationId,
+    );
+  }
+
+  @ApiOperation({
+    summary: '지원자 상태 변경',
+  })
+  @Patch('/:id')
+  async changeApplicantStatus(
+    @Param('id') id: number,
+    @Query('status') status: ApplicantStatus,
+  ) {
+    return await this.applicantService.changeApplicantStatus(id, status);
   }
 }

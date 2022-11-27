@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from 'src/application/application.entity';
+import { ApplicantStatus } from 'src/enum/applicant-status.enum';
 import { EssentialAnswer } from 'src/essential-answer/essential-answer.entity';
 import { Essential } from 'src/essential/essential.entity';
 import { QuestionAnswer } from 'src/question-answer/question-answer.entity';
@@ -78,5 +79,28 @@ export class ApplicantService {
     return {
       id: new_applicant.id,
     };
+  }
+
+  async getApplicantsByApplicationId(applicationId: number) {
+    return await this.applicantRepository.find({
+      relations: {
+        essentialAnswers: true,
+      },
+      where: {
+        application: {
+          id: applicationId,
+        },
+      },
+    });
+  }
+
+  async changeApplicantStatus(applicantId: number, status: ApplicantStatus) {
+    const applicant = await this.applicantRepository.findOne({
+      where: {
+        id: applicantId,
+      },
+    });
+
+    applicant.status = status;
   }
 }
